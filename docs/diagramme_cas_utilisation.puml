@@ -1,0 +1,95 @@
+@startuml Diagramme_CU_Gestion_Absences
+
+top to bottom direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 30
+
+' ============ ACTEURS ============
+actor "Utilisateur" as User
+
+actor "Administrateur" as Admin
+actor "Enseignant" as Ens
+actor "Étudiant" as Etu
+actor "Technicien" as Tech
+actor "Agent" as Ag
+
+Admin -up-|> User
+Ens -up-|> User
+Etu -up-|> User
+Tech -up-|> User
+Ag -up-|> User
+
+' ============ SYSTÈME ============
+rectangle "Système de Gestion des Absences" {
+
+  package "Accès au système" #LightBlue {
+    usecase "UC01\nS'authentifier" as UC01
+    usecase "UC02\nSe déconnecter" as UC02
+  }
+
+  package "Administration" #AliceBlue {
+    usecase "UC03\nConsulter le\ntableau de bord" as UC03
+    usecase "UC04\nGérer les\nutilisateurs" as UC04
+    usecase "UC05\nGérer la structure\nacadémique" as UC05
+    usecase "UC06\nGérer modules\net salles" as UC06
+    usecase "UC07\nGérer l'emploi\ndu temps" as UC07
+  }
+
+  package "Emploi du temps" #Honeydew {
+    usecase "UC08\nConsulter l'emploi\ndu temps" as UC08
+    usecase "UC09\nExporter PDF" as UC09
+  }
+
+  package "Suivi des absences" #LightYellow {
+    usecase "UC10\nEnregistrer\nles absences" as UC10
+    usecase "UC11\nSélectionner séance\net date" as UC11
+  }
+
+  package "Réclamations" #MistyRose {
+    usecase "UC12\nGérer les\nréclamations" as UC12
+  }
+
+  package "Services annexes" #WhiteSmoke {
+    usecase "UC13\nGérer les clés\ndes salles" as UC13
+  }
+}
+
+' ============ ASSOCIATIONS ACTEUR → UC ============
+User --> UC01
+User --> UC02
+
+Admin --> UC03
+Admin --> UC04
+Admin --> UC05
+Admin --> UC06
+Admin --> UC07
+Admin --> UC08
+Admin --> UC10
+Admin --> UC12
+
+Ens --> UC08
+Etu --> UC08
+
+Tech --> UC10
+Tech --> UC12
+
+Ag --> UC13
+
+' ============ RELATIONS <<include>> ============
+UC03 ..> UC01 : <<include>>
+UC04 ..> UC01 : <<include>>
+UC05 ..> UC01 : <<include>>
+UC06 ..> UC01 : <<include>>
+UC07 ..> UC01 : <<include>>
+UC08 ..> UC01 : <<include>>
+UC10 ..> UC01 : <<include>>
+UC12 ..> UC01 : <<include>>
+UC13 ..> UC01 : <<include>>
+
+UC08 ..> UC09 : <<include>>
+UC10 ..> UC11 : <<include>>
+
+@enduml
